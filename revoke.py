@@ -4,6 +4,7 @@ import time
 import requests
 import itchat
 from itchat.content import *
+import sqlite3
 
 # 定义一个字典，保存消息的信息。
 msg_dict = {}
@@ -14,6 +15,8 @@ if not os.path.exists(rec_tmp_dir):
     os.mkdir(rec_tmp_dir)
 
 face_bug = None
+table_name = 'chat_history'
+db_name = 'wechat.db'
 
 
 @itchat.msg_register([TEXT, PICTURE, MAP, CARD, SHARING, RECORDING, ATTACHMENT, VIDEO], isFriendChat=True,
@@ -47,6 +50,16 @@ def handler_receive_msg(msg):
         msg_content = msg['Text']
         msg_share_url = msg['Url']
     face_bug = msg_content
+
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute(
+        'insert into %s (msg_id,user_name,nick_name,type,status,create_time,text,content) values (?,?,?,?,?,?,?,?)' % table_name,
+        (msg_id, msg['FromUserName'], msg_from, msg['Type'], msg['Status'],
+         time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(msg_time)), msg_content, msg['Content']))
+    cursor.close()
+    conn.commit()
+    conn.close()
 
     msg_dict.update({
         msg_id: {
@@ -105,7 +118,28 @@ def send_msg_helper(msg):
             msg_dict.pop(old_msg_id)
 
 
+def create_table():
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    create_tb_cmd = '''CREATE TABLE IF NOT EXISTS %s
+       (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+       msg_id VARCHAR(50),
+       user_name VARCHAR(50),
+       nick_name VARCHAR(50),
+       type VARCHAR(50),
+       status INT,
+       create_time TIMESTAMP,
+       text TEXT,
+       content TEXT
+       );''' % table_name
+    cursor.execute(create_tb_cmd)
+    cursor.close()
+    conn.commit()
+    conn.close()
+
+
 if __name__ == "__main__":
+    create_table()
     itchat.auto_login(True)
     # 获取自己的UserName
     myUserName = itchat.get_friends(update=True)[0]['UserName']
