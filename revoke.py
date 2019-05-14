@@ -1,7 +1,7 @@
 import os
 import re
 import time
-
+import requests
 import itchat
 from itchat.content import *
 
@@ -56,6 +56,24 @@ def handler_receive_msg(msg):
         }
     })
 
+    # 当消息不是由自己发出的时候
+    if not msg['FromUserName'] == myUserName:
+        json = {
+            'reqType': 0,
+            'perception': {
+                'inputText': {
+                    'text': msg.Text
+                }
+            },
+            'userInfo': {
+                'apiKey': 'dc9244f1a958457d9ae3c9f0379de4e2',
+                'userId': '1',
+            }
+        }
+        r = requests.post('http://openapi.tuling123.com/openapi/api/v2', json=json)
+        data = r.json()
+        return '%s（%s）' % (data['results'][0]['values']['text'], 'Octopus')
+
 
 @itchat.msg_register([NOTE])
 def send_msg_helper(msg):
@@ -85,4 +103,6 @@ def send_msg_helper(msg):
 
 if __name__ == "__main__":
     itchat.auto_login(True)
+    # 获取自己的UserName
+    myUserName = itchat.get_friends(update=True)[0]['UserName']
     itchat.run(True)
