@@ -16,10 +16,12 @@ if not os.path.exists(rec_tmp_dir):
 face_bug = None
 
 
-# 注册消息接收器
 @itchat.msg_register([TEXT, PICTURE, MAP, CARD, SHARING, RECORDING, ATTACHMENT, VIDEO], isFriendChat=True,
                      isGroupChat=False, isMpChat=False)
 def handler_receive_msg(msg):
+    """
+    注册消息接收器
+    """
     global face_bug
     msg_time_rec = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     msg_id = msg['MsgId']
@@ -57,6 +59,9 @@ def handler_receive_msg(msg):
 
 @itchat.msg_register([NOTE])
 def send_msg_helper(msg):
+    """
+    注册撤回
+    """
     global face_bug
     if re.search(r'<replacemsg><!\[CDATA\[.*? 撤回了一条消息\]\]></replacemsg>', msg['Content']) is not None:
         old_msg_id = re.search(r'<msgid>(.*?)</msgid>', msg['Content']).group(1)
