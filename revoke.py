@@ -1,10 +1,11 @@
 import os
 import re
-import time
-import requests
-import itchat
-from itchat.content import *
 import sqlite3
+import time
+
+import itchat
+import requests
+from itchat.content import *
 
 # 定义一个字典，保存消息的信息。
 msg_dict = {}
@@ -54,7 +55,8 @@ def handler_receive_msg(msg):
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
     cursor.execute(
-        'insert into %s (msg_id,user_name,nick_name,type,status,create_time,text,content) values (?,?,?,?,?,?,?,?)' % table_name,
+        '''insert into %s (msg_id,user_name,nick_name,type,status,
+            create_time,text,content) values (?,?,?,?,?,?,?,?)''' % table_name,
         (msg_id, msg['FromUserName'], msg_from, msg['Type'], msg['Status'],
          time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(msg_time)), msg_content, msg['Content']))
     cursor.close()
