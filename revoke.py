@@ -17,7 +17,8 @@ if not os.path.exists(rec_tmp_dir):
 
 face_bug = None
 table_name = 'chat_history'
-db_name = 'wechat.db'
+tmp_dir = os.path.join(os.path.dirname(__file__), "rec_tmp")
+db_name = os.path.join(tmp_dir, 'wechat.db')
 
 
 @itchat.msg_register([TEXT, PICTURE, MAP, CARD, SHARING, RECORDING, ATTACHMENT, VIDEO], isFriendChat=True,

@@ -15,6 +15,7 @@ downloads/
 eggs/
 .eggs/
 .idea/
+.rec_tmp/
 lib/
 lib64/
 parts/
