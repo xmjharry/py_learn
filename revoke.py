@@ -130,7 +130,7 @@ def create_table():
        user_name VARCHAR(50),
        nick_name VARCHAR(50),
        type VARCHAR(50),
-       status INT,
+       status INT, 
        create_time TIMESTAMP,
        text TEXT,
        content TEXT
@@ -143,7 +143,8 @@ def create_table():
 
 if __name__ == "__main__":
     create_table()
-    itchat.auto_login(True)
-    # 获取自己的UserName
-    myUserName = itchat.get_friends(update=True)[0]['UserName']
-    itchat.run(True)
+    while 1:
+        itchat.auto_login(True)
+        # 获取自己的UserName
+        myUserName = itchat.get_friends(update=True)[0]['UserName']
+        itchat.run(True)
