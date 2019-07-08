@@ -1,14 +1,59 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import cv2
+import mpl_finance as mpf
+import matplotlib.dates as dates
 
-# frame = pd.read_excel('./rec_tmp/frame.xls')
-# frame.trade_date = pd.to_datetime(frame.trade_date, format='%Y%m%d')
-# print(frame.trade_date.dt.month.value_counts())
-# frame.set_index('trade_date', inplace=True)
-# frame_1 = frame['2019-01']
-# frame_period = frame_1.to_period('A')
-# frame.plot()
+fig, axes = plt.subplots(2, 2)
+
+print(axes.flatten())
+print(type(axes))
+print(fig)
+
+
+
+
+exit(0)
+
+print(id(plt.gcf()))
+print(id(plt.gca()))
+
+fig, axes = plt.subplots()
+
+plt.figure()
+
+print(id(plt.gcf()))
+print(id(plt.gca()))
+
+print(id(fig))
+print(id(axes))
+
+exit(0)
+
+frame = pd.read_excel('./rec_tmp/frame.xls')
+
+pd.qcut()
+plt.plot(frame.trade_date, frame.close, label='close')
+plt.plot(frame.trade_date, frame.high, label='high', color='y')
+plt.plot(frame.trade_date, frame.low, label='high', color='r')
+
+# plt.minorticks_on()
+plt.grid(axis='y')
+
+# plt.xticks(['2019-01-01','2019-02-05'], ['New Year','Spring Festival'])
+plt.legend()
+plt.show()
+
+exit(0)
+
+# https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases
+frame.trade_date = pd.to_datetime(frame.trade_date, format='%Y%m%d')
+print(frame.trade_date.dt.month.value_counts())
+frame.set_index('trade_date', inplace=True)
+frame_1 = frame['2019-01']
+frame_period = frame_1.to_period('A')
+frame.plot()
 
 # print(pd.qcut(np.array([1, 7, 5, 4, 6, 3]), 3, False))
 # print(type(type))
@@ -32,8 +77,7 @@ axes.text(10, 20, r'$%s$' % projection, color='r', fontsize=18)
 
 axes.annotate('annotate', xy=(0.25 * np.pi, 50), xytext=(20, -20), textcoords='offset points',
               arrowprops=dict(arrowstyle='-|>', connectionstyle='arc3,rad=.2', color='red'),
-              bbox=dict(boxstyle='round,pad=0.5', fc='yellow', ec='k', lw=1, alpha=0.4),color='r')
-
+              bbox=dict(boxstyle='round,pad=0.5', fc='yellow', ec='k', lw=1, alpha=0.4), color='r')
 
 plt.subplot(222)
 plt.plot(x, -x)
