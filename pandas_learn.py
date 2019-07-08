@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
-import mpl_finance as mpf
 import matplotlib.dates as dates
 
 fig, axes = plt.subplots(2, 2)
