@@ -14,8 +14,16 @@ for i in range(3):
 
         return f_closure
 
+from abc import abstractmethod
 
-    _list.append(func(i))
+
+class StrBig:
+    @abstractmethod
+    def test(self):
+        pass
+
+
+_list.append(func(i))
 
 for f in _list:
     print(f(1))
@@ -150,3 +158,41 @@ WS = r'(?P<WS>\s+)'
 master_pat = re.compile('|'.join([NAME, NUM, PLUS, TIMES, EQ, WS]))
 scanner = master_pat.scanner('foo = 42')
 print(scanner.match())
+
+
+def __iter__(self, *args, **kwargs):
+    print('__iter__')
+    return str.__iter__(self, *args, **kwargs)
+
+
+def __getitem__(self, *args, **kwargs):
+    print('__getitem__')
+    return str.__getitem__(self, *args, **kwargs)
+
+
+class PositiveInteger(int):
+    def __new__(cls, value):
+        return super(PositiveInteger, cls).__new__(cls, abs(value))
+
+    def __init__(cls, value):
+        return super(PositiveInteger, cls).__init__(abs(value))
+
+    def __len__(self):
+        return False
+
+
+rows = [
+    {'fname': 'Brian', 'lname': 'Jones', 'uid': 1003},
+    {'fname': 'David', 'lname': 'Beazley', 'uid': 1002},
+    {'fname': 'John', 'lname': 'Cleese', 'uid': 1001},
+    {'fname': 'Big', 'lname': 'Jones', 'uid': 1004}
+]
+
+print(sorted(rows, key=lambda item: item['fname']))
+
+# print( id(t))
+# print(t_2)
+# print(id(t_2))
+
+
+print(len('的'))
